@@ -65,15 +65,10 @@ def adaptLegacyTest(obj, config):
         subOptions = obj.options()
         subOptions.parseOptions(config['subArgs'])
 
-        test_class = obj(None, None, None, None)
+        test_class = obj(None, None, None)
         test_class.local_options = subOptions
         assets = test_class.load_assets()
 
-        # XXX here we are only taking assets that are set to one item only.
-        for key, inputs in assets.items():
-            pass
-
-        inputs = inputs
         local_options = subOptions
 
         @defer.inlineCallbacks
@@ -84,7 +79,14 @@ def adaptLegacyTest(obj, config):
             my_test = self.originalTest(None, None, None)
             my_test.report = legacy_reporter(self.legacy_report)
             args = {}
-            args[self.key] = self.input
+
+            # XXX here we are only taking assets that are set to one item only.
+            for key, inputs in assets.items():
+                print "key: %s\ninputs: %s" % (key, inputs)
+                self.key, self.input = key, inputs
+
+                args[self.key] = self.input
+
             result = yield my_test.startTest(args)
             self.report['result'] = result
 
