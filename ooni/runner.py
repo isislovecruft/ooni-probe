@@ -186,7 +186,7 @@ class ORunner(object):
 
     def run(self):
         #log.startLogging(sys.stdout)
-        log.start(True)
+        #log.start(True)
         self.reporterFactory.writeHeader()
 
         for inputUnit in InputUnitFactory(self.inputs):
