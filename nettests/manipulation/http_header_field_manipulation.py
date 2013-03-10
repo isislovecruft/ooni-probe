@@ -38,8 +38,8 @@ class UsageOptions(usage.Options):
 class HTTPHeaderFieldManipulation(httpt.HTTPTest):
     """
     It performes HTTP requests with request headers that vary capitalization
-    towards a backend. If we detect that the headers the backend received
-    matches the ones we have sent then we have detected tampering.
+    towards a backend. If the headers reported by the server differ from
+    the ones we sent, then we have detected tampering.
     """
     name = "HTTP Header Field Manipulation"
     author = "Arturo Filastò"
@@ -64,7 +64,7 @@ class HTTPHeaderFieldManipulation(httpt.HTTPTest):
         else:
             # XXX generate these from a random choice taken from whatheaders.com
             # http://s3.amazonaws.com/data.whatheaders.com/whatheaders-latest.xml.zip
-            headers = {"User-Agent": [random.choice(net.userAgents)[0]],
+            headers = {"User-Agent": [random.choice(net.userAgents)],
                 "Accept": ["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
                 "Accept-Encoding": ["gzip,deflate,sdch"],
                 "Accept-Language": ["en-US,en;q=0.8"],
