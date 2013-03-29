@@ -5,6 +5,7 @@ import os
 import time
 import yaml
 import random
+import webbrowser
 
 from twisted.internet import reactor
 from twisted.python import usage
@@ -30,7 +31,8 @@ class Options(usage.Options):
 
     optFlags = [["help", "h"],
                 ["resume", "r"],
-                ["no-default-reporter", "n"]]
+                ["no-default-reporter", "n"],
+                ["show-source", "s", "View ooni's source in default browser"]]
 
     optParameters = [["reportfile", "o", None, "report file name"],
                      ["testdeck", "i", None,
@@ -65,6 +67,11 @@ class Options(usage.Options):
         sys.settrace(spewer)
 
     def parseArgs(self, *args):
+        if self['show-source']:
+            webbrowser.open_new_tab(
+                "https://gitweb.torproject.org/ooni-probe.git/tree")
+            raise SystemExit("Viewing ooni source in default browser.")
+
         if self['testdeck']:
             return
         try:
