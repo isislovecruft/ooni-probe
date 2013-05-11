@@ -27,51 +27,56 @@ from ooni                 import nettest
 from ooni.utils           import log, date
 from ooni.utils.config    import ValueChecker
 
-from ooni.utils.onion     import TxtorconImportError
-from ooni.utils.onion     import PTNoBridgesException, PTNotFoundException
-
 
 try:
     from ooni.utils.onion     import parse_data_dir
 except:
     log.msg("Please go to /ooni/lib and do 'make txtorcon' to run this test!")
 
-class MissingAssetException(Exception):
-    pass
 
 class RandomPortException(Exception):
     """Raised when using a random port conflicts with configured ports."""
     def __init__(self):
-        log.msg("Unable to use random and specific ports simultaneously")
-        return sys.exit()
+        return failure.Failure(
+            UsageError("Can't use random and specific ports simultaneously"))
+
+class TxtorconImportError(ImportError):
+    """Raised when txtorcon cannot be found."""
+    pass
+
+class PTNoBridgesException(Exception):
+    """Raised when a pluggable transport is specified, but not bridges."""
+    def __init__(self):
+        return failure.Failure(
+            UsageError("Pluggable transport requires the bridges option"))
+
+class PTNotFoundException(Exception):
+    """Raised when the specified pluggable transport type is unknown."""
+    def __init__(self, transport_type=None):
+        return sys.exit("Pluggable Transport type %s unknown."
+                        % transport_type)
 
 class BridgetArgs(usage.Options):
-    """Commandline options."""
-    allowed = "Port to use for Tor's %s, must be between 1024 and 65535."
-    sock_check = ValueChecker(allowed % "SocksPort").port_check
-    ctrl_check = ValueChecker(allowed % "ControlPort").port_check
-
+    """Commandline options for the bridgeTest."""
     optParameters = [
         ['bridges', 'b', None,
-         'File listing bridge IP:ORPorts to test'],
+         'File listing bridges, in the form <IP>:<ORPort>, to test'],
         ['relays', 'f', None,
-         'File listing relay IPs to test'],
-        ['socks', 's', 9049, None, sock_check],
-        ['control', 'c', 9052, None, ctrl_check],
-        ['torpath', 'p', None,
+         'File listing Tor relays/bridges to test; as <IP>:<ORPort>'],
+        ['socks', 's', 9049, None],
+        ['control', 'c', 9051, None],
+        ['torpath', 'p', config.advanced.tor_binary,
          'Path to the Tor binary to use'],
-        ['datadir', 'd', None,
+        ['datadir', 'd', TOPLVLDIR/.bridge-data,
          'Tor DataDirectory to use'],
         ['transport', 't', None,
-         'Tor ClientTransportPlugin'],
-        ['resume', 'r', 0,
-         'Resume at this index']]
+         'Tor ClientTransportPlugin']]
     optFlags = [['random', 'x', 'Use random ControlPort and SocksPort']]
 
     def postOptions(self):
         if not self['bridges'] and not self['relays']:
-            raise MissingAssetException(
-                "Bridget can't run without bridges or relays to test!")
+            return failure.Failure(UsageError(
+                "Bridget can't run without bridges or relays to test!"))
         if self['transport']:
             ValueChecker.uid_check(
                 "Can't run bridget as root with pluggable transports!")
