@@ -19,12 +19,12 @@ import random
 import sys
 
 from twisted.internet  import defer
+from twisted.internet.defer import TimeoutError
 from zope.interface    import implements
 
 from txtorcon          import CircuitListenerMixin, IStreamAttacher
 from txtorcon          import TorState, TorConfig
 from ooni.utils        import log
-from ooni.utils.timer  import deferred_timeout, TimeoutError
 
 # XXX This can be refactored to os.path.abspath
 # os.path.abspath(path)
