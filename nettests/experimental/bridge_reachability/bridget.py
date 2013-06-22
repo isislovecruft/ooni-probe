@@ -12,26 +12,37 @@
 # :licence: see included LICENSE
 # :version: 0.1.0-alpha
 
-from __future__           import with_statement
-from functools            import partial
-from random               import randint
+from __future__       import with_statement
+from functools        import partial
+from random           import randint
 
 import os
 import sys
 
-from twisted.python       import usage
-from twisted.internet     import defer, error, reactor
+from twisted.python         import usage
+from twisted.python         import failure
+from twisted.internet       import defer
+from twisted.internet       import error
+from twisted.internet       import reactor
+from twisted.internet.defer import TimeoutError
+from txtorcon               import TorConfig
+from txtorcon               import TorState
 
-from ooni                 import nettest
+from ooni             import nettest
+from ooni             import otime
+from ooni             import config
+from ooni.utils       import log
 
-from ooni.utils           import log, date
-from ooni.utils.config    import ValueChecker
+#from ooni.utils         import process
+from ooni.utils.onion   import remove_public_relays, start_tor
+from ooni.utils.onion   import start_tor_filter_nodes
+from ooni.utils.onion   import setup_fail, setup_done
+from ooni.utils.onion   import CustomCircuit
 
-
-try:
-    from ooni.utils.onion     import parse_data_dir
-except:
-    log.msg("Please go to /ooni/lib and do 'make txtorcon' to run this test!")
+#try:
+#    from ooni.utils.onion     import parse_data_dir
+#except:
+#    log.msg("Please go to /ooni/lib and do 'make txtorcon' to run this test!")
 
 
 class RandomPortException(Exception):
