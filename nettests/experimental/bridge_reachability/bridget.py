@@ -45,16 +45,6 @@ from ooni.utils.onion   import CustomCircuit
 #    log.msg("Please go to /ooni/lib and do 'make txtorcon' to run this test!")
 
 
-class RandomPortException(Exception):
-    """Raised when using a random port conflicts with configured ports."""
-    def __init__(self):
-        return failure.Failure(
-            UsageError("Can't use random and specific ports simultaneously"))
-
-class TxtorconImportError(ImportError):
-    """Raised when txtorcon cannot be found."""
-    pass
-
 class PTNoBridgesException(Exception):
     """Raised when a pluggable transport is specified, but not bridges."""
     def __init__(self):
