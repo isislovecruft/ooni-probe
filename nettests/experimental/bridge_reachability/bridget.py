@@ -421,7 +421,7 @@ class BridgetTest(nettest.NetTestCase):
             A fired deferred which callbacks :meth:`experiment` and
             :meth:`OONITest.finished`.
         """
-        self.start_time = date.now()
+        self.start_time = otime.utcPrettyDateNow()
         self.d = self.experiment(args)
         self.d.addErrback(log.err)
         self.d.addCallbacks(self.finished, log.err)
