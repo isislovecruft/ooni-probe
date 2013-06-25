@@ -72,24 +72,6 @@ class BridgetArgs(usage.Options):
          'Tor DataDirectory to use'],
         ['transport', 't', None,
          'Tor ClientTransportPlugin']]
-    optFlags = [['random', 'x', 'Use random ControlPort and SocksPort']]
-
-    def postOptions(self):
-        if not self['bridges'] and not self['relays']:
-            return failure.Failure(UsageError(
-                "Bridget can't run without bridges or relays to test!"))
-        if self['transport']:
-            ValueChecker.uid_check(
-                "Can't run bridget as root with pluggable transports!")
-            if not self['bridges']:
-                raise PTNoBridgesException
-        if self['socks'] or self['control']:
-            if self['random']:
-                raise RandomPortException
-        if self['datadir']:
-            ValueChecker.dir_check(self['datadir'])
-        if self['torpath']:
-            ValueChecker.file_check(self['torpath'])
 
 class BridgetTest(nettest.NetTestCase):
     """
