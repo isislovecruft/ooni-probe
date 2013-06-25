@@ -239,20 +239,6 @@ class BridgetTest(nettest.NetTestCase):
             The :class:`BridgetAsset` line currently being used. Except that it
             in Bridget it doesn't, so it should be ignored and avoided.
         """
-        try:
-            from ooni.utils         import process
-            from ooni.utils.onion   import remove_public_relays, start_tor
-            from ooni.utils.onion   import start_tor_filter_nodes
-            from ooni.utils.onion   import setup_fail, setup_done
-            from ooni.utils.onion   import CustomCircuit
-            from ooni.utils.timer   import deferred_timeout, TimeoutError
-            from ooni.lib.txtorcon  import TorConfig, TorState
-        except ImportError:
-            raise TxtorconImportError
-        except TxtorconImportError, tie:
-            log.err(tie)
-            sys.exit()
-
         def reconfigure_done(state, bridges):
             """
             Append :ivar:`bridges['current']` to the list
