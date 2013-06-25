@@ -146,14 +146,16 @@ class BridgetTest(nettest.NetTestCase):
         self.relays['current']     = None
 
         if self.localOptions:
-            try:
-                from txtorcon import TorConfig
-            except ImportError:
-                raise TxtorconImportError
-            else:
-                self.config = TorConfig()
-            finally:
-                options = self.localOptions
+            self.config = TorConfig()
+            options = self.localOptions
+
+            ## first, the things we don't allow:
+            if options['transport'] is not None:
+                if os.geteuid() == 0:
+                    raise RuntimeError(
+                        "Can't run bridget as root with pluggable transports!")
+                if options['bridges'] is None:
+                    raise PTNoBridgesException
 
             if options['bridges']:
                 self.config.UseBridges = 1
