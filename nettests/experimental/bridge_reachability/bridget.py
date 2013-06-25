@@ -160,7 +160,7 @@ class BridgetTest(nettest.NetTestCase):
             if options['bridges']:
                 self.config.UseBridges = 1
                 self.bridges['all'] = read_from_file(options['bridges'])
-            if options['relays']:
+            if options['relays'] is not None:
                 ## first hop must be in TorState().guards
                 # XXX where is this defined?
                 self.config.EntryNodes = ','.join(relay_list)
