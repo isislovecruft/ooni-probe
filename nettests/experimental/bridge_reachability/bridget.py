@@ -68,7 +68,7 @@ class BridgetArgs(usage.Options):
         ['control', 'c', 9051, None],
         ['torpath', 'p', config.advanced.tor_binary,
          'Path to the Tor binary to use'],
-        ['datadir', 'd', TOPLVLDIR/.bridge-data,
+        ['datadir', 'd', config.advanced.data_directory,
          'Tor DataDirectory to use'],
         ['transport', 't', None,
          'Tor ClientTransportPlugin']]
