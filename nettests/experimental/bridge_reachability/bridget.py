@@ -112,7 +112,7 @@ class BridgetTest(nettest.NetTestCase):
         self.data_directory  = None
 
         def read_from_file(filename):
-            log.msg("Loading information from %s ..." % opt)
+            log.msg("Loading information from %s ..." % filename)
             with open(filename) as fp:
                 lst = []
                 for line in fp.readlines():
