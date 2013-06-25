@@ -168,12 +168,15 @@ class BridgetTest(nettest.NetTestCase):
 
             if options['socks']:
                 self.socks_port = options['socks']
+            else:
+                log.msg("Using randomized SocksPort ...")
+                self.socks_port   = randint(1024, 2**16)
             if options['control']:
                 self.control_port = options['control']
-            if options['random']:
-                log.msg("Using randomized ControlPort and SocksPort ...")
-                self.socks_port   = randint(1024, 2**16)
+            else:
+                log.msg("Using randomized ControlPort...")
                 self.control_port = randint(1024, 2**16)
+
             if options['torpath']:
                 self.tor_binary = options['torpath']
             if options['datadir']:
