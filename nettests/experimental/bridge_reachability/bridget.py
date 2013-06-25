@@ -116,15 +116,13 @@ class BridgetTest(nettest.NetTestCase):
             with open(filename) as fp:
                 lst = []
                 for line in fp.readlines():
-                    if line.startswith('#'):
-                        continue
-                    else:
-                        lst.append(line.replace('\n',''))
+                    if line.startswith('#'): continue
+                    else: lst.append(line.replace('\n',''))
                 return lst
 
         def __count_remaining__(which):
-            total, reach, unreach = map(lambda x: which[x],
-                                        ['all', 'reachable', 'unreachable'])
+            total, reach, unreach = map(
+                lambda x: which[x], ['all', 'reachable', 'unreachable'])
             count = len(total) - reach() - unreach()
             return count
 
