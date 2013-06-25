@@ -344,9 +344,9 @@ class BridgetTest(nettest.NetTestCase):
 
         log.msg("Bridget: initiating test ... ")  ## Start the experiment
 
+        cfg = self.config.config
         ## if we've at least one bridge, and our config has no 'Bridge' line
-        if self.bridges['remaining']() >= 1 \
-                and not 'Bridge' in self.config.config:
+        if self.bridges['remaining']() >= 1 and not 'Bridge' in cfg:
 
             ## configure our first bridge line
             self.bridges['current'] = self.bridges['all'][0]
