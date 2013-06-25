@@ -163,8 +163,9 @@ class BridgetTest(nettest.NetTestCase):
             if options['relays'] is not None:
                 ## first hop must be in TorState().guards
                 # XXX where is this defined?
-                self.config.EntryNodes = ','.join(relay_list)
                 self.relays['all'] = read_from_file(options['relays'])
+                self.config.EntryNodes = ','.join(self.relays['all'])
+
             if options['socks']:
                 self.socks_port = options['socks']
             if options['control']:
