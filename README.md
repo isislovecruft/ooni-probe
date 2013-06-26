@@ -18,7 +18,23 @@ network data that will assist you with your endeavors!
 
 ## Getting started with ooniprobe is easy (with Vagrant)
 
-0) [Install Vagrant](http://downloads.vagrantup.com/)
+0) [Install Vagrant](http://downloads.vagrantup.com/) and [Install Virtualbox](https://www.virtualbox.org/wiki/Downloads)
+
+0.1)
+
+On OSX:
+
+If youd don't have it install homebrew http://mxcl.github.io/homebrew/
+
+```
+brew install git
+```
+
+On debian/ubuntu:
+
+```
+sudo apt-get install git
+```
 
 1) Open a Terminal and run:
 
