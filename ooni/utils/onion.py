@@ -587,42 +587,6 @@ class CustomCircuit(CircuitListenerMixin):
             AppendWaiting(self, deferred)).addErrback(
             log.err)
 
-class TxtorconImportError(ImportError):
-    """
-    Raised when ooni.lib.txtorcon cannot be imported from. Checks our current
-    working directory and the path given to see if txtorcon has been
-    initialized via /ooni/lib/Makefile.
-    """
-    from os import getcwd, path
-
-    cwd, tx = getcwd(), 'lib/txtorcon/torconfig.py'
-    try:
-        log.msg("Unable to import from ooni.lib.txtorcon")
-        if cwd.endswith('ooni'):
-            check = path.join(cwd, tx)
-        elif cwd.endswith('utils'):
-            check = path.join(cwd, '../'+tx)
-        else:
-            check = path.join(cwd, 'ooni/'+tx)
-        assert path.isfile(check)
-    except:
-        log.msg("Error: Some OONI libraries are missing!")
-        log.msg("Please go to /ooni/lib/ and do \"make all\"")
-
-class PTNoBridgesException(Exception):
-    """Raised when a pluggable transport is specified, but not bridges."""
-    def __init__(self):
-        log.msg("Pluggable transport requires the bridges option")
-        return sys.exit()
-
-class PTNotFoundException(Exception):
-    def __init__(self, transport_type):
-        m  = "Pluggable Transport type %s was unaccounted " % transport_type
-        m += "for, please contact isis(at)torproject(dot)org and it will "
-        m += "get included."
-        log.msg("%s" % m)
-        return sys.exit()
-
 @defer.inlineCallbacks
 def __start_tor_with_timer__(reactor, config, control_port, tor_binary,
                              data_dir, bridges=None, relays=None, timeout=None,
